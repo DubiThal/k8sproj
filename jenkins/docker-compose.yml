@@ -1,0 +1,24 @@
+services:
+  jenkins:
+    build: .
+    container_name: jenkins
+    restart: always
+    user: "1000:992"
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    environment:
+      - JENKINS_OPTS=--httpPort=8080
+      - JENKINS_SLAVE_AGENT_PORT=50000
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external: true 
+
+volumes:
+  jenkins_home:
