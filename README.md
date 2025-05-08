@@ -1,4 +1,4 @@
-# 🌤️ Weather Forecast App – DevOps Project by Dubi Thal
+# 🌤️ K8S for Weather Forecast App – DevOps Project by Dubi Thal
 
 ## 🎯 Overview
 This is a Flask-based weather forecast web application deployed in a Docker container on an AWS EC2 instance. The project uses Jenkins for CI/CD and Terraform for infrastructure management. GitHub and DockerHub are integrated for version control and image storage.
