@@ -2,36 +2,30 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: flask-app
+  labels:
+    app: flask-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: flask
+      app: flask-app
   template:
     metadata:
       labels:
-        app: flask
+        app: flask-app
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "flask-role"
+        vault.hashicorp.com/agent-inject-secret-api-key: "secret/data/flask-config"
+        vault.hashicorp.com/agent-inject-template-api-key: |
+          {{- with secret "secret/data/flask-config" -}}
+          export API_KEY="{{ .Data.data.API_KEY }}"
+          {{- end }}
     spec:
+      serviceAccountName: flask-service-account
       containers:
-      - name: flask
-        image: your-dockerhub-username/your-image-name:latest
-        ports:
-        - containerPort: 5000
-        env:
-        - name: API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: flask-api-secret
-              key: API_KEY
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 5000
-          initialDelaySeconds: 10
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 5000
-          initialDelaySeconds: 5
-          periodSeconds: 5
+        - name: flask-container
+          image: dubithal/flask-app:latest
+          ports:
+            - containerPort: 5000
+
