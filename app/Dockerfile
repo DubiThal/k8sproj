@@ -10,4 +10,7 @@ COPY . .
 ENV PYTHONUNBUFFERED=1
 ENV FLASK_APP=app.py
 ENV FLASK_ENV=development
-CMD ["python", "app.py"]
+COPY start.sh .
+RUN chmod +x start.sh
+CMD ["./start.sh"]
+

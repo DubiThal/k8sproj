@@ -19,8 +19,9 @@ spec:
         vault.hashicorp.com/agent-inject-secret-api-key: "secret/data/flask-config"
         vault.hashicorp.com/agent-inject-template-api-key: |
           {{- with secret "secret/data/flask-config" -}}
-          export API_KEY="{{ .Data.data.API_KEY }}"
+          export WEATHER_API_KEY="{{ .Data.data.API_KEY }}"
           {{- end }}
+        vault.hashicorp.com/tls-skip-verify: "true" 
     spec:
       serviceAccountName: flask-service-account
       containers:
@@ -28,4 +29,3 @@ spec:
           image: dubithal/flask-app:latest
           ports:
             - containerPort: 5000
-

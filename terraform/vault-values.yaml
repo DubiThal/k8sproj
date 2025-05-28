@@ -1,0 +1,39 @@
+server:
+  ha:
+    enabled: false
+  standalone:
+    enabled: true
+    config: |
+      storage "file" {
+        path = "/vault/data"
+      }
+      listener "tcp" {
+        address = "0.0.0.0:8200"
+        tls_disable = 1
+      }
+      api_addr = "http://127.0.0.1:8200"
+      ui = true
+
+  extraArgs:
+    - "-log-level=debug"
+
+  dataStorage:
+    enabled: true
+    size: 1Gi
+    storageClass: "standard"
+
+  resources:
+    limits:
+      cpu: 300m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 100
+
+ui:
+  enabled: true
+
